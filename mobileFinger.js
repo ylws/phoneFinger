@@ -45,23 +45,92 @@ function fingersEvent(obj){
 fingersEvent.prototype={
 	"init":function(){
 		var _this=this;
-		
 		var els=this.ElementsEl;
-		els.addEventListener("touchstart",function(){
-			_this.touchStart()
-		},false)
-		els.addEventListener("touchmove",function(){
-			_this.touchMove()
-		},false)
-		els.addEventListener("touchend",function(){
-			_this.touchEnd()
-		},false)
+		if (navigator.userAgent.toLowerCase().match(/.(msie)/)!=null) {
+		   var flag=false;
+		   var startx=0;
+		   var starty=0;
+			els.onmousedown=function(e){
+				flag=true;
+				startx=e.pageX;
+				starty=e.pageY;
+			}
+			els.onmouseup=function(e){
+				if(flag)
+				{
+					var xlength=e.pageX-startx;
+					var ylength=e.pageY-starty;
+					if(Math.abs(xlength)-Math.abs(ylength)>0){
+						//x方向
+						if(xlength>0){
+							//右
+							_this.directions="right";
+							if(typeof _this.UDLRdirection==="function" ){
+					     		_this.UDLRdirection("right",xlength)
+					     	}
+							
+						}
+						else
+						{//左
+							_this.directions="left"
+							if(typeof _this.UDLRdirection==="function" ){
+					     		_this.UDLRdirection("left",xlength)
+					     	}
+						}
+						if(typeof _this.UDLRoneFnname==="function"){
+							_this.UDLRoneFnname(_this.directions)
+							_this.directions=""
+						}
+					}
+					else
+					{
+						//y方向
+						if(ylength>0){
+							//下
+							_this.directions="down";
+							if(typeof _this.UDLRdirection==="function" ){
+					     		_this.UDLRdirection("down",ylength)
+					     	}
+						}
+						else
+						{//上
+							_this.directions="top";
+							if(typeof _this.UDLRdirection==="function" ){
+					     		_this.UDLRdirection("top",ylength)
+					     	}
+						}
+						if(typeof _this.UDLRoneFnname==="function"){
+							_this.UDLRoneFnname(_this.directions)
+							_this.directions=""
+						}
+					}
+				}
+				flag=false;
+				
+			}
+			
+			
+			
+		}
+		else
+		{
+			els.addEventListener("touchstart",function(){
+				_this.touchStart()
+			},false)
+			els.addEventListener("touchmove",function(){
+				_this.touchMove()
+			},false)
+			els.addEventListener("touchend",function(){
+				_this.touchEnd()
+			},false)
+		}
+		
 		
 	},
 	"touchStart":function(){
 		event=window.event||e;
 		//阻止网页默认动作（即网页滚动）
-	   //event.preventDefault();
+	   event.preventDefault();
 	    var _this=this;
 	    if(this.touchLS){
 	    	 setTimeout(function(event){
@@ -93,7 +162,6 @@ fingersEvent.prototype={
 		event=window.event||e;
 		event.preventDefault();
 	    if(event.touches.length==1){
-	    
 	    	var x = Number(event.targetTouches[0].pageX); //页面触点X坐标
 			var y = Number(event.targetTouches[0].pageY); //页面触点Y坐标
 		     var thisval,ylength,xlength;
