@@ -51,18 +51,41 @@ fingersEvent.prototype={
 		   var startx=0;
 		   var starty=0;
 			els.onmousedown=function(e){
+				var e=window.event||e;
 				flag=true;
-				startx=e.pageX;
-				starty=e.pageY;
+				if(navigator.userAgent.toLowerCase().match(/.(msie)[\/: ]([8.]+)/) != null)
+				{
+					
+					startx=e.clientX;
+					starty=e.clientY
+				}
+				else
+				{
+					startx=e.pageX;
+					starty=e.pageY;
+				}
 			}
 			els.onmouseup=function(e){
+				var e=window.event||e;
 				if(flag)
 				{
-					var xlength=e.pageX-startx;
-					var ylength=e.pageY-starty;
+					if(navigator.userAgent.toLowerCase().match(/.(msie)[\/: ]([8.]+)/) != null)
+					{
+						var xlength=e.clientX-startx;
+						var ylength=e.clientY-starty;
+					}
+					else
+					{
+						var xlength=e.pageX-startx;
+						var ylength=e.pageY-starty;
+					}
+					
+					
 					if(Math.abs(xlength)-Math.abs(ylength)>0){
+						
 						//x方向
 						if(xlength>0){
+							
 							//右
 							_this.directions="right";
 							if(typeof _this.UDLRdirection==="function" ){
@@ -72,12 +95,14 @@ fingersEvent.prototype={
 						}
 						else
 						{//左
+							
 							_this.directions="left"
 							if(typeof _this.UDLRdirection==="function" ){
 					     		_this.UDLRdirection("left",xlength)
 					     	}
 						}
 						if(typeof _this.UDLRoneFnname==="function"){
+							
 							_this.UDLRoneFnname(_this.directions)
 							_this.directions=""
 						}
