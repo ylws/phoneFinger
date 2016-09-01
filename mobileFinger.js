@@ -1,4 +1,4 @@
-/*
+﻿/*
  * 名称：移动端手势/fingersEvent
  * 作者：djl
  * 邮箱：474569696@qq.com
@@ -47,12 +47,17 @@ fingersEvent.prototype={
 		var _this=this;
 		var els=this.ElementsEl;
 		if (navigator.userAgent.toLowerCase().match(/.(msie)/)!=null) {
-		   var flag=false;
-		   var startx=0;
-		   var starty=0;
+		    var flag=false;
+		    var startx=0;
+		    var starty=0;
+		    var xlength;
+			var ylength;
+
 			els.onmousedown=function(e){
-				var e=window.event||e;
+				
 				flag=true;
+				var e=window.event||e;
+				
 				if(navigator.userAgent.toLowerCase().match(/.(msie)[\/: ]([8.]+)/) != null)
 				{
 					
@@ -64,23 +69,24 @@ fingersEvent.prototype={
 					startx=e.pageX;
 					starty=e.pageY;
 				}
-			}
-			els.onmouseup=function(e){
+
+
+
+			document.onmouseup=function(e){
+
 				var e=window.event||e;
 				if(flag)
 				{
 					if(navigator.userAgent.toLowerCase().match(/.(msie)[\/: ]([8.]+)/) != null)
 					{
-						var xlength=e.clientX-startx;
-						var ylength=e.clientY-starty;
+						 xlength=e.clientX-startx;
+						 ylength=e.clientY-starty;
 					}
 					else
 					{
-						var xlength=e.pageX-startx;
-						var ylength=e.pageY-starty;
+						 xlength=e.pageX-startx;
+						 ylength=e.pageY-starty;
 					}
-					
-					
 					if(Math.abs(xlength)-Math.abs(ylength)>0){
 						
 						//x方向
@@ -88,24 +94,16 @@ fingersEvent.prototype={
 							
 							//右
 							_this.directions="right";
-							if(typeof _this.UDLRdirection==="function" ){
-					     		_this.UDLRdirection("right",xlength)
-					     	}
+							
 							
 						}
 						else
 						{//左
 							
 							_this.directions="left"
-							if(typeof _this.UDLRdirection==="function" ){
-					     		_this.UDLRdirection("left",xlength)
-					     	}
-						}
-						if(typeof _this.UDLRoneFnname==="function"){
 							
-							_this.UDLRoneFnname(_this.directions)
-							_this.directions=""
 						}
+						
 					}
 					else
 					{
@@ -113,29 +111,37 @@ fingersEvent.prototype={
 						if(ylength>0){
 							//下
 							_this.directions="down";
-							if(typeof _this.UDLRdirection==="function" ){
-					     		_this.UDLRdirection("down",ylength)
-					     	}
+							
 						}
 						else
 						{//上
 							_this.directions="top";
-							if(typeof _this.UDLRdirection==="function" ){
-					     		_this.UDLRdirection("top",ylength)
-					     	}
+							
 						}
-						if(typeof _this.UDLRoneFnname==="function"){
-							_this.UDLRoneFnname(_this.directions)
-							_this.directions=""
+
+						
+					}
+					if(typeof _this.UDLRdirection==="function" ){
+						if(_this.directions=="top"||_this.directions=="down"){
+							_this.UDLRdirection(_this.directions,ylength)
+						}
+						if(_this.directions=="left"||_this.directions=="right"){
+							_this.UDLRdirection(_this.directions,xlength)
 						}
 					}
+					if(typeof _this.UDLRoneFnname==="function"){
+						
+						_this.UDLRoneFnname(_this.directions)
+
+						_this.directions=""
+					}				     		
+					     	
+					flag=false;	
 				}
-				flag=false;
+	
 				
 			}
-			
-			
-			
+			}
 		}
 		else
 		{
