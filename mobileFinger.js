@@ -58,7 +58,7 @@ fingersEvent.prototype={
 				flag=true;
 				var e=window.event||e;
 				
-				if(navigator.userAgent.toLowerCase().match(/.(msie)[\/: ]([8.]+)/) != null)
+				if(navigator.userAgent.toLowerCase().match(/.(msie)[\/: ]([(8|9|10).]+)/) != null)
 				{
 					
 					startx=e.clientX;
@@ -72,75 +72,75 @@ fingersEvent.prototype={
 
 
 
-			document.onmouseup=function(e){
-
-				var e=window.event||e;
-				if(flag)
-				{
-					if(navigator.userAgent.toLowerCase().match(/.(msie)[\/: ]([8.]+)/) != null)
-					{
-						 xlength=e.clientX-startx;
-						 ylength=e.clientY-starty;
-					}
-					else
-					{
-						 xlength=e.pageX-startx;
-						 ylength=e.pageY-starty;
-					}
-					if(Math.abs(xlength)-Math.abs(ylength)>0){
-						
-						//x方向
-						if(xlength>0){
-							
-							//右
-							_this.directions="right";
-							
-							
-						}
-						else
-						{//左
-							
-							_this.directions="left"
-							
-						}
-						
-					}
-					else
-					{
-						//y方向
-						if(ylength>0){
-							//下
-							_this.directions="down";
-							
-						}
-						else
-						{//上
-							_this.directions="top";
-							
-						}
-
-						
-					}
-					if(typeof _this.UDLRdirection==="function" ){
-						if(_this.directions=="top"||_this.directions=="down"){
-							_this.UDLRdirection(_this.directions,ylength)
-						}
-						if(_this.directions=="left"||_this.directions=="right"){
-							_this.UDLRdirection(_this.directions,xlength)
-						}
-					}
-					if(typeof _this.UDLRoneFnname==="function"){
-						
-						_this.UDLRoneFnname(_this.directions)
-
-						_this.directions=""
-					}				     		
-					     	
-					flag=false;	
-				}
+				document.onmouseup=function(e){
 	
-				
-			}
+					var e=window.event||e;
+					if(flag)
+					{
+						if(navigator.userAgent.toLowerCase().match(/.(msie)[\/: ]([(8|9|10).]+)/) != null)
+						{
+							 xlength=e.clientX-startx;
+							 ylength=e.clientY-starty;
+						}
+						else
+						{
+							 xlength=e.pageX-startx;
+							 ylength=e.pageY-starty;
+						}
+						if(Math.abs(xlength)-Math.abs(ylength)>0){
+							
+							//x方向
+							if(xlength>0){
+								
+								//右
+								_this.directions="right";
+								
+								
+							}
+							else
+							{//左
+								
+								_this.directions="left"
+								
+							}
+							
+						}
+						else
+						{
+							//y方向
+							if(ylength>0){
+								//下
+								_this.directions="down";
+								
+							}
+							else
+							{//上
+								_this.directions="top";
+								
+							}
+	
+							
+						}
+						if(typeof _this.UDLRdirection==="function" ){
+							if(_this.directions=="top"||_this.directions=="down"){
+								_this.UDLRdirection(_this.directions,ylength)
+							}
+							if(_this.directions=="left"||_this.directions=="right"){
+								_this.UDLRdirection(_this.directions,xlength)
+							}
+						}
+						if(typeof _this.UDLRoneFnname==="function"){
+							
+							_this.UDLRoneFnname(_this.directions)
+	
+							_this.directions=""
+						}				     		
+						     	
+						flag=false;	
+					}
+		
+					
+				}
 			}
 		}
 		else
