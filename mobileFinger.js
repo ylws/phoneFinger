@@ -15,7 +15,7 @@
  *	"UDLR":function(direction,len){//方向+移动距离
  *		alert(direction+"--"+len)
  *	},
- * "UDLRone":function(direction){//滑动结束后执行,方向+移动距离
+ * "UDLRone":function(direction){//滑动结束后执行,方向+移动距离 未判断direction是否为空，有时需要判断单击和滑动，direction是判断标识
  *		alert(direction)
  *	},
  *	"Rolateorigin":"center center",//旋转原点
@@ -305,7 +305,7 @@ fingersEvent.prototype={
 		this.touchXPointAarr=[];
 		this.touchYPointAarr=[];
 		this.fingerPosition=[];
-		if(typeof this.UDLRoneFnname==="function"&&this.directions!=""){
+		if(typeof this.UDLRoneFnname==="function"){
 			this.UDLRoneFnname(this.directions)
 		}
 		this.directions=""
